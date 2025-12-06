@@ -1,33 +1,19 @@
 package com.example.code_assignment_aaos.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 /**
  * Created by Onkar Pendse  pendseomkar92@gmail.com
  *  on 06-12-2025.
  *  For More Information Contact me!!!.
  *          !!  Thank You  !!
  */
+@Entity(tableName = "raw_locations")
 data class RawLocation (
-    val id: Long,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val latitude: Double,
     val longitude: Double,
     val timestampMillis: Long,
     val type: PlaceType
-){
-    companion object {
-
-        fun createSample(
-            id: Long,
-            lat: Double,
-            lon: Double,
-            type: PlaceType
-        ): RawLocation {
-            return RawLocation(
-                id = id,
-                latitude = lat,
-                longitude = lon,
-                timestampMillis = System.currentTimeMillis(),
-                type = type
-            )
-        }
-    }
-}
+)
