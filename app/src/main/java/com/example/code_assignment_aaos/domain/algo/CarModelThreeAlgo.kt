@@ -19,20 +19,14 @@ class CarModelThreeAlgo @Inject constructor() : DistanceBasedAlgo {
         carLat: Double,
         carLong: Double
     ): List<RawLocation> {
-        return rawLocations.filter { rawLocation ->
-            val distance = DistanceUtils.distanceInKM(
-                carLat,
-                carLong,
-                rawLocation.latitude,
-                rawLocation.longitude
-            )
+        val distance = CarModelTwoAlgo().filter(rawLocations, carLat, carLong)
 
-            when (rawLocation.type) {
-                PlaceType.CHARGING_STATION -> distance <= 5
-                PlaceType.RESTAURANT -> distance <= 3
-                PlaceType.PARKING -> distance <= 2
-                PlaceType.HOTEL -> distance <= 7
-            }
-        }
+        return distance.groupBy { it.type }
+            .mapValues { (_, group) ->
+                if (group.size > 1) {
+                    group.take(1)
+                } else group
+            }.values.flatten()
+
     }
 }
